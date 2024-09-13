@@ -10,7 +10,7 @@ on:
   pull_request:
     branches:
       - main
-      - staging
+      - stagingcd
       - development
       - 'feature/*'
 
@@ -27,8 +27,23 @@ jobs:
         with:
           node-version: '14'  # Adjust this version based on your project's needs
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+  
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+  
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test
+  
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+  
