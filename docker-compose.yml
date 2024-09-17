@@ -11,18 +11,22 @@ services:
     ports:
       - "${PORT}:${PORT}"
     environment:
-      DB_HOST: mongo_db
+      DB_HOST: mongodb
       DB_USER: ${MONGODB_USERNAME}
       DB_PASSWORD: ${MONGODB_PASSWORD}
       DB_NAME: ${MONGODB_DATABASE}
       DB_PORT: ${MONGODB_PORT}
+    stdin_open: true
+    tty: true
     networks:
       - app_network
     depends_on:
-      - mongo_db
+      - mongodb
 
-  mongo_db:
-    container_name: db-containner
+  mongodb:
+    container_name: db-container
+    env_file: 
+      - path: ./backend/.env
     image: mongo:5.0.2
     restart: unless-stopped
     #environment:

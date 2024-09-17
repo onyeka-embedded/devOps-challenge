@@ -7,12 +7,11 @@ const {
   DB_HOST,
   DB_PORT,
   DB_NAME,
-  DB_USERNAME,
-  DB_PASSWORD
+  //DB_USERNAME,
+  //DB_PASSWORD
 } = process.env;
 
-//const uri = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-
+//const uri = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 const uri = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
 const client = new MongoClient(uri, {
