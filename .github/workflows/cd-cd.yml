@@ -3,47 +3,26 @@ name: CI Workflow
 on:
   push:
     branches:
-      - main
       - staging
-      - development
-      - 'feature/*'
-  pull_request:
-    branches:
-      - main
-      - staging
-      - development
       - 'feature/*'
 
+  pull_request:
+    branches:
+      - staging
+
 jobs:
-  test:
+  build_and_publish_image_to_docker:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  # Adjust this version based on your project's needs
-
-      - name: Install backend dependencies
+        uses: actions/checkout@v3
+      - name: build image
         run: |
-          cd backend
-          npm install
-  
-      - name: Install frontend dependencies
+          docker build ./frontend/ -t onyekaembedded/frontend-ci:latest
+          docker build ./backend/ -t onyekaembedded/backend-ci:latest
+      - name: push image To docker
         run: |
-          cd frontend
-          npm install
-  
-      - name: Run backend tests
-        run: |
-          cd backend
-          npm test
-  
-      - name: Run frontend tests
-        run: |
-          cd frontend
-          npm test
-  
+          docker login -u onyekaembedded -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docket push onyekaembedded/frontend-ci:latest
+          docket push onyekaembedded/backend-ci:latest
