@@ -23,6 +23,6 @@ jobs:
           docker build ./backend/ -t onyekaembedded/backend-ci:latest
       - name: push image To docker
         run: |
-          docker login -u onyekaembedded -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u onyekaembedded --password-stdin 
           docket push onyekaembedded/frontend-ci:latest
           docket push onyekaembedded/backend-ci:latest
