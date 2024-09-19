@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - staging
-      - 'feature/*'
+      #- 'feature/*'
 
   pull_request:
     branches:
-      - staging
+      - main
 
 jobs:
   build_and_publish_image_to_docker:

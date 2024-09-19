@@ -91,7 +91,7 @@ PORT=5050
 3. Run Locally With Docker
 Use Docker Compose to spin up the entire application (frontend, backend, and MongoDB):
 ```bash
-docker-compose --env files ./backend/.env up --build
+docker compose --env-file backend/.env up --build
 ```
 * *Note the presence of --env files ./backend/.env because of the location of the .env file
 You can then access the application via the following:
