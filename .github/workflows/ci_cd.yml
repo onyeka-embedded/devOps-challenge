@@ -1,0 +1,27 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - staging
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_publish_image_to_docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: build image
+        run: |
+          docker build ./frontend/ -t onyekaembedded/frontend-ci:latest
+          docker build ./backend/ -t onyekaembedded/backend-ci:latest
+      - name: push image To docker
+        run: |
+          docker login -u onyekaembedded -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push onyekaembedded/frontend-ci:latest
+          docker push onyekaembedded/backend-ci:latest

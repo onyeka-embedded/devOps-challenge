@@ -1,0 +1,59 @@
+#version: '3.9'
+
+services:
+
+  backend:
+    container_name: backend-container
+    env_file: 
+      - path: ./backend/.env
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      DB_HOST: mongodb
+      DB_USER: ${MONGODB_USERNAME}
+      DB_PASSWORD: ${MONGODB_PASSWORD}
+      DB_NAME: ${MONGODB_DATABASE}
+      DB_PORT: ${MONGODB_PORT}
+    stdin_open: true
+    tty: true
+    networks:
+      - app_network
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: db-container
+    env_file: 
+      - path: ./backend/.env
+    image: mongo:5.0.2
+    restart: unless-stopped
+    #environment:
+      #MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      #MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      #MONGO_INITDB_DATABASE: ${MONGODB_DATABASE}
+    ports:
+      - "27017:${MONGODB_PORT}"
+    networks:
+      - app_network
+    volumes:
+      - db-data:/data/db
+
+  frontend:
+    container_name: frontend-container
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+    #environment:
+      #API_URL: http://backend:5050 
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
